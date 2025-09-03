@@ -3,7 +3,14 @@ export interface Task {
   title: string
   description: string
   doBy: string
-  done: boolean
+  taskIndex: number
+  status: Status
+}
+
+export interface Tasks {
+  "To do": Task[],
+  "Doing": Task[],
+  "Done": Task[]
 }
 
 export interface TaskForm {
