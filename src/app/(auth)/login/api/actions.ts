@@ -1,4 +1,4 @@
-import { LoginFormData } from "./types";
+import { LoginFormData } from "@/types/api";
 
 export async function loginUser(data: LoginFormData) {
   try {

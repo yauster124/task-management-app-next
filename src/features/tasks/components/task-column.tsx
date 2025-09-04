@@ -1,16 +1,16 @@
-import { Task } from "@/types/api"
+import { Status, Task } from "@/types/api"
 import { Droppable } from "@hello-pangea/dnd"
-import { Card, CardContent, CardHeader, CardTitle } from "./card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { TaskCard } from "./task-card"
 
-export const TaskColumn = ({ status, tasks }: { status: string, tasks: Task[] }) => {
+export const TaskColumn = ({ status, tasks }: { status: Status, tasks: Task[] }) => {
     return (
         <Card>
             <CardHeader className="relative flex justify-between items-start">
-                <CardTitle>{status}</CardTitle>
+                <CardTitle>{status.title}</CardTitle>
             </CardHeader>
             <CardContent>
-                <Droppable droppableId={status}>
+                <Droppable droppableId={status.id}>
                     {(droppableProvided, snapshot) => (
                         <div
                             ref={droppableProvided.innerRef}

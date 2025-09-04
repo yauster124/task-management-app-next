@@ -10,19 +10,93 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { LoginFormData } from "@/types/api"
 import { useMutation } from "@tanstack/react-query"
-import { loginUser } from "./api/actions"
+import { loginUser } from "@/app/(auth)/login/api/actions"
 import { useRouter } from "next/navigation"
 import { setCookie } from "cookies-next"
+import { LoginInput, loginInputSchema, useLogin } from "@/lib/auth"
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export function LoginForm({
+type LoginFormProps = {
+  onSuccess: (token: string) => void;
+};
+
+export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+    const login = useLogin({
+        onSuccess
+    })
+
+    const form = useForm<LoginInput>({
+        resolver: zodResolver(loginInputSchema),
+        defaultValues: {
+            username: "",
+            password: ""
+        }
+    });
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>Login to your account</CardTitle>
+                <CardDescription>
+                    Enter your email below to login to your account
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit((values) => { login.mutate(values) })} className="space-y-4">
+                        <FormField
+                            control={form.control}
+                            name="username"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Username</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <Input type="password" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {login.isPending ? (
+                            <Button className="w-full" disabled>
+                                <Loader2Icon className="animate-spin" />
+                                Please wait
+                            </Button>
+                        ) : (
+                            <Button type="submit" className="w-full">
+                                Login
+                            </Button>
+                        )}
+                    </form>
+                </Form>
+            </CardContent>
+        </Card>
+    )
+}
+
+export const LoginFormOld = ({
     className,
     ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
     const router = useRouter()
 
     const loginMutation = useMutation({

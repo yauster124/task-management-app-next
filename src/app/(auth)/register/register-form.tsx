@@ -1,7 +1,7 @@
 "use client"
 
 import { Loader2Icon } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { cn } from "@/utils/utils"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useForm, SubmitHandler } from "react-hook-form"
-import { RegisterFormData } from "./api/types"
+import { RegisterFormData } from "@/types/api"
 import { useMutation } from "@tanstack/react-query"
 import { registerUser } from "./api/actions"
 import { useRouter } from "next/navigation"

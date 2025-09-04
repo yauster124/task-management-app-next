@@ -1,7 +1,7 @@
 "use server"
 
-import { fetchWithAuth } from "@/lib/utilsServer"
-import { Task, TaskForm } from "./types"
+import { fetchWithAuth } from "@/utils/utilsServer"
+import { Task, TaskForm } from "@/types/api"
 import { Description } from "@radix-ui/react-dialog"
 
 const API_URL = process.env.API_URL
@@ -87,18 +87,9 @@ export async function deleteTask(id: string) {
     }
 }
 
-export async function moveTask({ sourceTask, destinationTask }: { sourceTask: Task, destinationTask: Task }) {
+export async function moveTask(updatedTask: Task) {
     try {
-        const updatedTask = {
-            id: sourceTask.id,
-            title: null,
-            description: null,
-            doBy: null,
-            taskIndex: destinationTask.taskIndex,
-            status: destinationTask.status
-        }
-
-        const res = await fetchWithAuth(`${API_URL}/tasks/${sourceTask.id}`, {
+        const res = await fetchWithAuth(`${API_URL}/tasks/${updatedTask.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
