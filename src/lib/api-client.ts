@@ -92,8 +92,6 @@ async function fetchApi<T>(
         next,
     });
 
-    console.log(body)
-
     if (!response.ok) {
         const message = (await response.json()).message || response.statusText;
         // if (typeof window !== 'undefined') {

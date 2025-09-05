@@ -10,14 +10,14 @@ export const TaskColumn = ({ status, tasks }: { status: Status, tasks: Task[] })
                 <CardTitle>{status.title}</CardTitle>
             </CardHeader>
             <CardContent>
-                <Droppable droppableId={status.id}>
+                <Droppable droppableId={String(status.id)}>
                     {(droppableProvided, snapshot) => (
                         <div
                             ref={droppableProvided.innerRef}
                             {...droppableProvided.droppableProps}
                             className={snapshot.isDraggingOver ? "bg-neutral-800" : ""}
                         >
-                            {tasks.map((task, index) => (
+                            {(tasks ?? []).map((task, index) => (
                                 <TaskCard key={task.id} task={task} index={index} />
                             ))}
                             {droppableProvided.placeholder}

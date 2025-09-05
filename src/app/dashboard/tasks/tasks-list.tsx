@@ -4,9 +4,9 @@ import { useQuery } from "@tanstack/react-query"
 import { getTasks } from "@/app/dashboard/tasks/api/actions"
 import { Task } from "@/types/api"
 import { SkeletonCard } from "@/components/ui/skeleton-card"
-import { TaskBoard } from "@/components/ui/task-board"
+import { TaskBoard } from "@/features/tasks/components/task-board"
 
-export default function Tasks() {
+export default function TasksList() {
     const { isPending: toDoPending, isError: toDoError, data: toDo = [] } = useQuery<Task[]>({
         queryKey: ['To do'],
         queryFn: () => getTasks(1)
@@ -30,7 +30,7 @@ export default function Tasks() {
                 ) : toDoError || doingError || doneError ? (
                     <p>Failed to load tasks</p>
                 ) : (
-                    <TaskBoard tasks={{ "To do": toDo, "Doing": doing, "Done": done }} />
+                    <TaskBoard />
                 )
             }
         </>

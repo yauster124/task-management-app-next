@@ -1,4 +1,4 @@
-import { RegisterFormData } from "./types";
+import { RegisterFormData } from "@/types/api"
 
 export async function registerUser(data: RegisterFormData) {
   try {
