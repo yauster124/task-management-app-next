@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { api } from "@/lib/api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useUIStore } from "@/components/store/ui-store";
 
 export const updateTaskInputSchema = z.object({
     title: z.string().min(1, "Required"),
@@ -21,7 +22,7 @@ export const updateTask = ({
     return api.patch(`/tasks/${taskId}`, data);
 }
 
-export const useUpdateTask = () => {
+export const useUpdateTask = (onSuccess?: () => void) => {
     const queryClient = useQueryClient();
 
     return useMutation<
@@ -32,8 +33,11 @@ export const useUpdateTask = () => {
         mutationFn: updateTask,
         onSuccess: (_, variables) => {
             queryClient.refetchQueries({
-                queryKey: ["tasks", variables.statusId]
-            })
+                queryKey: ["tasks", Number(variables.statusId)]
+            });
+            useUIStore.getState().close(`update-task-${variables.taskId}`);
+            useUIStore.getState().close(`task-menu-${variables.taskId}`);
+            onSuccess?.();
         }
     });
 }

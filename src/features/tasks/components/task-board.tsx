@@ -10,6 +10,7 @@ import { useMoveTask } from "../api/move-task";
 import { SkeletonCard } from "@/components/ui/skeleton-card";
 import { Task } from "@/types/api";
 import { useEffect } from "react";
+import _ from "lodash";
 
 export const TaskBoard = () => {
     const statusesQuery = useStatuses();
@@ -20,20 +21,22 @@ export const TaskBoard = () => {
 
     const fetchedColumns: Record<string, Task[]> = {};
     const allSuccess = tasksQueries.every(r => r.isSuccess);
-
-    const setColumns = useTasksStore((state) => state.setColumns);
-    useEffect(() => {
-        statuses?.forEach((status, index) => {
+    statuses?.forEach((status, index) => {
             const query = tasksQueries[index];
             fetchedColumns[status.id] = query.data ?? [];
         });
+
+    const columns = useTasksStore((s) => s.columns);
+    const setColumns = useTasksStore((state) => state.setColumns);
+    const isEqual = _.isEqual(columns, fetchedColumns);
+    
+    useEffect(() => {
         setColumns(fetchedColumns);
-    }, [allSuccess])
+    }, [allSuccess, isEqual])
 
     const onDragEnd = (result: DropResult) => {
         const { source, destination } = result;
         if (source.droppableId === destination?.droppableId && source.index === destination.index) return;
-        console.log(destination?.index)
 
         const sourceTask = columns[source.droppableId][source.index]
 
@@ -61,8 +64,6 @@ export const TaskBoard = () => {
             destStatusId: destination.droppableId
         })
     }
-
-    const columns = useTasksStore((s) => s.columns);
 
     return (
         <>

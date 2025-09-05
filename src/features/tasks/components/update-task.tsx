@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { DatePicker } from "@/components/ui/date-picker"
+import { Loader2Icon } from "lucide-react"
+import { useUIStore } from "@/components/store/ui-store"
 
 export const UpdateTask = ({
     trigger,
@@ -16,6 +18,8 @@ export const UpdateTask = ({
     trigger: React.ReactNode,
     task: Task
 }) => {
+    const isOpen = useUIStore((s) => s.isOpen(`update-task-${task.id}`));
+    const { open, close } = useUIStore();
     const updateTask = useUpdateTask();
 
     const form = useForm<UpdateTaskInput>({
@@ -28,7 +32,7 @@ export const UpdateTask = ({
     });
 
     return (
-        <Dialog>
+        <Dialog open={isOpen} onOpenChange={(openValue) => openValue ? open(`update-task-${task.id}`) : close(`update-task-${task.id}`)}>
             <DialogTrigger asChild>
                 {trigger}
             </DialogTrigger>
@@ -89,12 +93,18 @@ export const UpdateTask = ({
                             <DialogClose asChild>
                                 <Button variant="outline">Cancel</Button>
                             </DialogClose>
-                            <Button type="submit">Save changes</Button>
+                            {updateTask.isPending ? (
+                                <Button disabled>
+                                    <Loader2Icon className="animate-spin" />
+                                    Please wait
+                                </Button>
+                            ) : (
+                                <Button type="submit">Save changes</Button>
+                            )}
                         </DialogFooter>
                     </form>
                 </Form>
             </DialogContent>
-
         </Dialog>
     )
 }

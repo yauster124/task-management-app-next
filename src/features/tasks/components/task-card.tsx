@@ -6,8 +6,12 @@ import { Task } from "@/types/api"
 import { Draggable } from "@hello-pangea/dnd";
 import { UpdateTask } from "./update-task";
 import { DeleteTask } from "./delete-task";
+import { useUIStore } from "@/components/store/ui-store";
 
 export const TaskCard = ({ task, index }: { task: Task, index: number }) => {
+    const isOpen = useUIStore((s) => s.isOpen(`task-menu-${task.id}`));
+    const { open, close } = useUIStore();
+
     return (
         <Draggable draggableId={String(task.id)} index={index}>
             {(provided, snapshot) => (
@@ -18,7 +22,7 @@ export const TaskCard = ({ task, index }: { task: Task, index: number }) => {
                 >
                     <CardHeader className="relative flex justify-between items-start">
                         <CardTitle>{task.title}</CardTitle>
-                        <DropdownMenu>
+                        <DropdownMenu open={isOpen} onOpenChange={(openValue) => openValue ? open(`task-menu-${task.id}`) : close(`task-menu-${task.id}`)}>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="icon">
                                     <MoreHorizontal className="h-5 w-5" />
