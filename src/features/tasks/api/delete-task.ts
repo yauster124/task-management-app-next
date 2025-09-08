@@ -12,15 +12,11 @@ export const deleteTask = ({
 export const useDeleteTask = () => {
     const queryClient = useQueryClient();
 
-    return useMutation<
-        unknown,
-        Error,
-        { taskId: string; statusId: string }
-    >({
+    return useMutation({
         mutationFn: deleteTask,
-        onSuccess: (_, variables) => {
+        onSuccess: () => {
             queryClient.refetchQueries({
-                queryKey: ["tasks", variables.statusId]
+                queryKey: ["tasks"]
             })
         }
     });

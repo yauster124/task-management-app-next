@@ -8,14 +8,10 @@ import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { useTasksStore } from "../store/tasks-store";
 import { useMoveTask } from "../api/move-task";
 import { SkeletonCard } from "@/components/ui/skeleton-card";
-import { Task } from "@/types/api";
-import _ from "lodash";
 import { useEffect } from "react";
 
 export const TaskBoard = () => {
     const statusesQuery = useStatuses();
-    const statuses = statusesQuery.data;
-
     const tasksQuery = useTasks();
     const moveTaskMutation = useMoveTask();
 
@@ -23,13 +19,7 @@ export const TaskBoard = () => {
     const setColumns = useTasksStore((state) => state.setColumns);
     useEffect(() => {
         if (tasksQuery.isSuccess) setColumns(tasksQuery.data);
-    }, [tasksQuery.data])
-
-    console.log("CYCLE: ", {
-        "COLUMNS": columns,
-        "FETCHED COLUMNS": tasksQuery.data,
-        "QUERY": tasksQuery
-    });
+    }, [tasksQuery.data]);
 
     const onDragEnd = (result: DropResult) => {
         const { source, destination } = result;
@@ -39,7 +29,7 @@ export const TaskBoard = () => {
 
         if (!destination) return;
 
-        const destStatus = statuses?.find((s) => s.id == destination.droppableId);
+        const destStatus = statusesQuery.data?.find((s) => s.id == destination.droppableId);
 
         if (!destStatus) return;
 
@@ -73,7 +63,7 @@ export const TaskBoard = () => {
                     <DragDropContext onDragEnd={onDragEnd}>
                         <div className="flex justify-center">
                             <div className="grid w-[900px] grid-cols-3 gap-4">
-                                {statuses?.map((status) => {
+                                {statusesQuery.data?.map((status) => {
                                     return (
                                         <TaskColumn
                                             key={status.id}

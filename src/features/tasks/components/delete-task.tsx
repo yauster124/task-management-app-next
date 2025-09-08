@@ -1,6 +1,7 @@
 import { Task } from "@/types/api"
 import { useDeleteTask } from "../api/delete-task"
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger, AlertDialogAction, AlertDialogFooter, AlertDialogHeader } from "@/components/ui/alert-dialog";
+import { Loader2Icon } from "lucide-react";
 
 export const DeleteTask = ({
     trigger,
@@ -25,14 +26,20 @@ export const DeleteTask = ({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                        onClick={() => deleteTask.mutate({
-                            taskId: task.id,
-                            statusId: task.status.id
-                        })}
-                    >
-                        Continue
-                    </AlertDialogAction>
+                    {deleteTask.isPending ? (
+                        <AlertDialogAction disabled>
+                            <Loader2Icon className="animate-spin" />
+                            Please wait
+                        </AlertDialogAction>
+                    ) : (
+                        <AlertDialogAction
+                            onClick={() => deleteTask.mutate({
+                                taskId: task.id
+                            })}
+                        >
+                            Continue
+                        </AlertDialogAction>
+                    )}
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

@@ -2,8 +2,17 @@ import { Status, Task } from "@/types/api"
 import { Droppable } from "@hello-pangea/dnd"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { TaskCard } from "./task-card"
+import { Button } from "@/components/ui/button"
+import { PlusIcon } from "lucide-react"
+import { CreateTask } from "./create-task"
 
-export const TaskColumn = ({ status, tasks }: { status: Status, tasks: Task[] }) => {
+export const TaskColumn = ({
+    status,
+    tasks
+}: {
+    status: Status,
+    tasks: Task[]
+}) => {
     return (
         <Card>
             <CardHeader className="relative flex justify-between items-start">
@@ -24,6 +33,19 @@ export const TaskColumn = ({ status, tasks }: { status: Status, tasks: Task[] })
                         </div>
                     )}
                 </Droppable>
+                <CreateTask
+                    key={status.id}
+                    trigger={
+                        <Button
+                            variant="secondary"
+                            size="icon"
+                            className="w-full"
+                        >
+                            <PlusIcon />
+                        </Button>
+                    }
+                    status={status}
+                />
             </CardContent>
         </Card >
     )

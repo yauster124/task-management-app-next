@@ -25,11 +25,7 @@ export const updateTask = ({
 export const useUpdateTask = (onSuccess?: () => void) => {
     const queryClient = useQueryClient();
 
-    return useMutation<
-        unknown,
-        Error,
-        { data: UpdateTaskInput; taskId: string; statusId: string }
-    >({
+    return useMutation({
         mutationFn: updateTask,
         onSuccess: (_, variables) => {
             queryClient.refetchQueries({

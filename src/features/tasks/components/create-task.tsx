@@ -1,38 +1,39 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Task } from "@/types/api"
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { useForm } from "react-hook-form"
-import { UpdateTaskInput, updateTaskInputSchema, useUpdateTask } from "../api/update-task"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { DatePicker } from "@/components/ui/date-picker"
-import { Loader2Icon } from "lucide-react"
-import { useUIStore } from "@/components/store/ui-store"
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Status } from "@/types/api"
+import { CreateTaskInput, createTaskInputSchema, useCreateTask } from "../api/create-task";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { DatePicker } from "@/components/ui/date-picker";
+import { Button } from "@/components/ui/button";
+import { Loader2Icon } from "lucide-react";
+import { useUIStore } from "@/components/store/ui-store";
+import z from "zod";
 
-export const UpdateTask = ({
+export const CreateTask = ({
     trigger,
-    task
+    status
 }: {
     trigger: React.ReactNode,
-    task: Task
+    status: Status
 }) => {
-    const isOpen = useUIStore((s) => s.isOpen(`update-task-${task.id}`));
+    const isOpen = useUIStore((s) => s.isOpen(`create-task-${status.id}`));
     const { open, close } = useUIStore();
-    const updateTask = useUpdateTask();
+    const createTask = useCreateTask();
 
-    const form = useForm<UpdateTaskInput>({
-        resolver: zodResolver(updateTaskInputSchema),
+    const form = useForm<CreateTaskInput>({
+        resolver: zodResolver(createTaskInputSchema),
         defaultValues: {
-            title: task.title,
-            description: task.description,
-            doBy: new Date(task.doBy)
+            title: "",
+            description: "",
+            doBy: new Date()
         }
     });
 
     return (
-        <Dialog open={isOpen} onOpenChange={(openValue) => openValue ? open(`update-task-${task.id}`) : close(`update-task-${task.id}`)}>
+        <Dialog open={isOpen} onOpenChange={(openValue) => openValue ? open(`create-task-${status.id}`) : close(`create-task-${status.id}`)}>
             <DialogTrigger asChild>
                 {trigger}
             </DialogTrigger>
@@ -40,15 +41,18 @@ export const UpdateTask = ({
                 <Form {...form}>
                     <form
                         onSubmit={
-                            form.handleSubmit((values) => updateTask.mutate({
-                                data: values,
-                                taskId: task.id
-                            }))
+                            form.handleSubmit((values) => {
+                                createTask.mutate({
+                                    data: values,
+                                    status: status
+                                });
+                                form.reset();
+                            })
                         }
                         className="space-y-4"
                     >
                         <DialogHeader>
-                            <DialogTitle>Edit task</DialogTitle>
+                            <DialogTitle>{status.title}</DialogTitle>
                         </DialogHeader>
                         <FormField
                             control={form.control}
@@ -92,18 +96,18 @@ export const UpdateTask = ({
                             <DialogClose asChild>
                                 <Button variant="outline">Cancel</Button>
                             </DialogClose>
-                            {updateTask.isPending ? (
+                            {createTask.isPending ? (
                                 <Button disabled>
                                     <Loader2Icon className="animate-spin" />
                                     Please wait
                                 </Button>
                             ) : (
-                                <Button type="submit">Save changes</Button>
+                                <Button type="submit">Create task</Button>
                             )}
                         </DialogFooter>
                     </form>
                 </Form>
             </DialogContent>
         </Dialog>
-    )
+    );
 }
