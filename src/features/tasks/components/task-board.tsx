@@ -9,34 +9,27 @@ import { useTasksStore } from "../store/tasks-store";
 import { useMoveTask } from "../api/move-task";
 import { SkeletonCard } from "@/components/ui/skeleton-card";
 import { Task } from "@/types/api";
-import { useEffect } from "react";
 import _ from "lodash";
+import { useEffect } from "react";
 
 export const TaskBoard = () => {
     const statusesQuery = useStatuses();
     const statuses = statusesQuery.data;
 
-    const tasksQueries = useTasks({ statuses });
+    const tasksQuery = useTasks();
     const moveTaskMutation = useMoveTask();
-
-    const fetchedColumns: Record<string, Task[]> = {};
-    const allSuccess = tasksQueries.every(r => r.isSuccess);
-    statuses?.forEach((status, index) => {
-            const query = tasksQueries[index];
-            fetchedColumns[status.id] = query.data ?? [];
-        });
 
     const columns = useTasksStore((s) => s.columns);
     const setColumns = useTasksStore((state) => state.setColumns);
-    const isEqual = _.isEqual(columns, fetchedColumns);
-    
-    console.log("isEqual", isEqual);
-    console.log("columns: ", columns)
-    console.log("fetchedColumns: ", fetchedColumns)
-
     useEffect(() => {
-        setColumns(fetchedColumns);
-    }, [allSuccess, isEqual])
+        if (tasksQuery.isSuccess) setColumns(tasksQuery.data);
+    }, [tasksQuery.data])
+
+    console.log("CYCLE: ", {
+        "COLUMNS": columns,
+        "FETCHED COLUMNS": tasksQuery.data,
+        "QUERY": tasksQuery
+    });
 
     const onDragEnd = (result: DropResult) => {
         const { source, destination } = result;
@@ -72,9 +65,9 @@ export const TaskBoard = () => {
     return (
         <>
             {
-                !tasksQueries.every(r => r.isSuccess) ? (
+                tasksQuery.isPending ? (
                     <SkeletonCard />
-                ) : tasksQueries.some(r => r.isError) ? (
+                ) : tasksQuery.isError ? (
                     <p>Failed to load tasks</p>
                 ) : (
                     <DragDropContext onDragEnd={onDragEnd}>

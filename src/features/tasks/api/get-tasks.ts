@@ -1,22 +1,15 @@
-import { useQueries, UseQueryResult } from "@tanstack/react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 import { api } from "@/lib/api-client";
-import { Status, Task } from "@/types/api";
+import { Task } from "@/types/api";
 
-export const getTasksByStatus = ({ statusId }: { statusId: string }) => {
-    return api.get("/tasks", {
-        params: {
-            statusId: statusId
-        }
-    })
+export const getTasksByStatus = (): Promise<Record<string, Task[]>> => {
+    return api.get("/tasks");
 }
 
-export const useTasks = ({ statuses }: { statuses?: Status[] }): UseQueryResult<Task[], unknown>[] => {
-    return useQueries({
-        queries: (statuses || []).map((status) => ({
-            queryKey: ["tasks", status.id],
-            queryFn: () => getTasksByStatus({ statusId: String(status.id) }),
-            enabled: !!statuses
-        }))
+export const useTasks = () => {
+    return useQuery<Record<string, Task[]>>({
+        queryKey: ["tasks"],
+        queryFn: getTasksByStatus
     })
 }

@@ -33,7 +33,7 @@ export const useUpdateTask = (onSuccess?: () => void) => {
         mutationFn: updateTask,
         onSuccess: (_, variables) => {
             queryClient.refetchQueries({
-                queryKey: ["tasks", Number(variables.statusId)]
+                queryKey: ["tasks"]
             });
             useUIStore.getState().close(`update-task-${variables.taskId}`);
             useUIStore.getState().close(`task-menu-${variables.taskId}`);
