@@ -30,6 +30,10 @@ export const TaskBoard = () => {
     const setColumns = useTasksStore((state) => state.setColumns);
     const isEqual = _.isEqual(columns, fetchedColumns);
     
+    console.log("isEqual", isEqual);
+    console.log("columns: ", columns)
+    console.log("fetchedColumns: ", fetchedColumns)
+
     useEffect(() => {
         setColumns(fetchedColumns);
     }, [allSuccess, isEqual])

@@ -21,10 +21,10 @@ export const useMoveTask = () => {
     >({
         mutationFn: moveTask,
         onSuccess: (_, variables) => {
-            queryClient.refetchQueries({ queryKey: ["tasks", variables.sourceStatusId] });
+            queryClient.refetchQueries({ queryKey: ["tasks", Number(variables.sourceStatusId)] });
 
             if (variables.sourceStatusId !== variables.destStatusId) {
-                queryClient.refetchQueries({ queryKey: ["tasks", variables.destStatusId] });
+                queryClient.refetchQueries({ queryKey: ["tasks", Number(variables.destStatusId)] });
             }
         }
     });
