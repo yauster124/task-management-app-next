@@ -25,3 +25,22 @@ export type LoginInput = z.infer<typeof loginInputSchema>;
 const loginWithEmailAndPassword = (data: LoginInput): Promise<AuthResponse> => {
     return api.post('/api/auth/signin', data, { authRequired: false });
 };
+
+export const useRegister = ({ onSuccess }: { onSuccess?: (token: string) => void }) => {
+    return useMutation({
+        mutationFn: registerWithEmailAndPassword,
+        onSuccess: (data) => {
+            onSuccess?.(data.accessToken);
+        },
+    })
+}
+
+export const registerInputSchema = z.object({
+    username: z.string().min(1, 'Required').email('Invalid email'),
+    password: z.string().min(5, 'Required'),
+});
+
+export type RegisterInput = z.infer<typeof registerInputSchema>;
+const registerWithEmailAndPassword = (data: RegisterInput): Promise<AuthResponse> => {
+    return api.post('/api/auth/signup', data, { authRequired: false });
+};

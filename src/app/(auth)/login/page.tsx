@@ -11,10 +11,12 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
-        <LoginForm onSuccess={(accessToken) => {
-          setCookie('accessToken', accessToken, { maxAge: 60 * 15 });
-          router.push("/dashboard/tasks");
-        }} />
+        <LoginForm
+          onSuccess={(accessToken) => {
+            setCookie('accessToken', accessToken, { maxAge: 60 * 15 });
+            router.push("/dashboard/tasks");
+          }}
+        />
       </div>
     </div>
   )

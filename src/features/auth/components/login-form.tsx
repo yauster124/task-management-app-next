@@ -1,7 +1,6 @@
 "use client"
 
 import { Loader2Icon } from "lucide-react"
-import { cn } from "@/utils/utils"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -15,9 +14,10 @@ import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { LoginInput, loginInputSchema, useLogin } from "@/lib/auth"
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link"
 
 type LoginFormProps = {
-  onSuccess: (token: string) => void;
+    onSuccess: (token: string) => void;
 };
 
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
@@ -82,6 +82,13 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                         )}
                     </form>
                 </Form>
+                <div className="flex justify-center mt-4 ">
+                    <Button variant="link" asChild>
+                        <Link href="/register">
+                            Don't have an account?
+                        </Link>
+                    </Button>
+                </div>
             </CardContent>
         </Card>
     )

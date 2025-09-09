@@ -1,0 +1,95 @@
+"use client"
+
+import { Loader2Icon } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { useForm } from "react-hook-form"
+import { RegisterInput, registerInputSchema, useRegister } from "@/lib/auth"
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link"
+
+type RegisterFormProps = {
+    onSuccess: (token: string) => void;
+};
+
+export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
+    const register = useRegister({
+        onSuccess
+    })
+
+    const form = useForm<RegisterInput>({
+        resolver: zodResolver(registerInputSchema),
+        defaultValues: {
+            username: "",
+            password: ""
+        }
+    });
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>Create a new account</CardTitle>
+                <CardDescription>
+                    Enter your email below to create a new account
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit((values) => { register.mutate(values) })} className="space-y-4">
+                        <FormField
+                            control={form.control}
+                            name="username"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Username</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <Input type="password" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {register.isPending ? (
+                            <Button className="w-full" disabled>
+                                <Loader2Icon className="animate-spin" />
+                                Please wait
+                            </Button>
+                        ) : (
+                            <Button type="submit" className="w-full">
+                                Create account
+                            </Button>
+                        )}
+                    </form>
+                </Form>
+                <div className="flex justify-center mt-4 ">
+                    <Button variant="link" asChild>
+                        <Link href="/login">
+                            Already have an account?
+                        </Link>
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
