@@ -35,5 +35,5 @@ export interface Status {
 }
 
 export type AuthResponse = {
-    token: string;
+    accessToken: string;
 }

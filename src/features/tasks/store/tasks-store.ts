@@ -21,7 +21,6 @@ export const useTasksStore = create<TasksStore>((set) => ({
                 const [movedTask] = sourceTasks.splice(taskIndex, 1);
 
                 destTasks.splice(newIndex, 0, { ...movedTask, status: newStatus });
-                console.log(destTasks);
 
                 const reindexedSource = sourceTasks.map((t, i) => ({ ...t, position: i }));
                 const reindexedDest = destTasks.map((t, i) => ({ ...t, position: i }));

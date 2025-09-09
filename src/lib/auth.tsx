@@ -11,7 +11,7 @@ export const useLogin = ({ onSuccess }: { onSuccess?: (token: string) => void })
     return useMutation({
         mutationFn: loginWithEmailAndPassword,
         onSuccess: (data) => {
-            onSuccess?.(data.token);
+            onSuccess?.(data.accessToken);
         },
     })
 }
@@ -23,5 +23,5 @@ export const loginInputSchema = z.object({
 
 export type LoginInput = z.infer<typeof loginInputSchema>;
 const loginWithEmailAndPassword = (data: LoginInput): Promise<AuthResponse> => {
-    return api.post('/api/auth/signin', data);
+    return api.post('/api/auth/signin', data, { authRequired: false });
 };

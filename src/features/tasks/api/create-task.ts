@@ -24,8 +24,6 @@ export const createTask = ({
         status: status
     }
 
-    console.log(status);
-
     return api.post("/tasks", newTask);
 }
 
@@ -39,9 +37,6 @@ export const useCreateTask = () => {
                 queryKey: ["tasks"]
             });
             useUIStore.getState().close(`create-task-${variables.status.id}`);
-        },
-        onError: (error) => {
-            console.log(error.message)
         }
     })
 }

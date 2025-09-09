@@ -54,7 +54,7 @@ export const TaskCard = ({ task, index }: { task: Task, index: number }) => {
                         <CardDescription>{task.description}</CardDescription>
                     </CardContent>
                     <CardFooter>
-                        {/* {task.doBy.toISOString()} */}
+                        {task.doBy.toString()}
                     </CardFooter>
                 </Card>
             )}
