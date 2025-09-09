@@ -20,9 +20,18 @@ export default function DashboardLayout({
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                                    <Link href="/dashboard/tasks">Home</Link>
-                                </NavigationMenuLink>
+                                <Link href="/dashboard/tasks" legacyBehavior passHref>
+                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                        Home
+                                    </NavigationMenuLink>
+                                </Link>
+                            </NavigationMenuItem>
+                            <NavigationMenuItem>
+                                <Link href="/dashboard/settings" legacyBehavior passHref>
+                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                        Settings
+                                    </NavigationMenuLink>
+                                </Link>
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
@@ -30,7 +39,6 @@ export default function DashboardLayout({
                 </div>
             </nav>
 
-            {/* Page content */}
             <main className="flex-1 p-4">
                 {children}
             </main>

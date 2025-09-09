@@ -85,7 +85,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                 <div className="flex justify-center mt-4 ">
                     <Button variant="link" asChild>
                         <Link href="/register">
-                            Don't have an account?
+                            Don&apos;t have an account?
                         </Link>
                     </Button>
                 </div>

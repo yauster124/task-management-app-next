@@ -6,6 +6,7 @@ import { z } from "zod";
 import { AuthResponse } from "@/types/api";
 
 import { api } from './api-client';
+import { deleteCookie } from "cookies-next";
 
 export const useLogin = ({ onSuccess }: { onSuccess?: (token: string) => void }) => {
     return useMutation({
@@ -44,3 +45,20 @@ export type RegisterInput = z.infer<typeof registerInputSchema>;
 const registerWithEmailAndPassword = (data: RegisterInput): Promise<AuthResponse> => {
     return api.post('/api/auth/signup', data, { authRequired: false });
 };
+
+export const logout = () => {
+    return api.post("/api/auth/logout");
+}
+
+export const useLogout = () => {
+    return useMutation({
+        mutationFn: logout,
+        onSuccess: () => {
+            deleteCookie("accessToken");
+            window.location.href = "/login";
+        },
+        onError: (error) => {
+            console.log(error.message)
+        }
+    });
+}
