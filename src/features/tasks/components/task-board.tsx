@@ -62,7 +62,7 @@ export const TaskBoard = () => {
                 ) : (
                     <DragDropContext onDragEnd={onDragEnd}>
                         <div className="flex justify-center">
-                            <div className="w-3xl grid grid-cols-3 gap-4">
+                            <div className="w-7xl grid grid-cols-3 gap-4">
                                 {statusesQuery.data?.map((status) => {
                                     return (
                                         <TaskColumn

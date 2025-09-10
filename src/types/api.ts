@@ -5,9 +5,15 @@ export interface Task {
   doBy: Date
   taskIndex: number
   status: Status
+  categories: Category[]
 }
 
 export interface Status {
+  id: string
+  title: string
+}
+
+export interface Category {
   id: string
   title: string
 }
