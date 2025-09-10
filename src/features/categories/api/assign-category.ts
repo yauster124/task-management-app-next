@@ -29,7 +29,7 @@ export const useAssignCategory = () => {
             queryClient.refetchQueries({
                 queryKey: ["tasks"]
             });
-            useUIStore.getState().close(`category-combobox-${variables.taskId}-`);
+            useUIStore.getState().close(`category-combobox-${variables.taskId}-new`);
         }
     })
 }

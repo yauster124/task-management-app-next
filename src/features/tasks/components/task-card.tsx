@@ -14,6 +14,10 @@ export const TaskCard = ({ task, index }: { task: Task, index: number }) => {
     const categoriesQuery = useCategories();
     const { open, close } = useUIStore();
 
+    const filteredCategories = (categoriesQuery.data || []).filter(
+        c => !new Set(task.categories.map(tc => tc.id)).has(c.id)
+    );
+
     return (
         <Draggable draggableId={String(task.id)} index={index}>
             {(provided, snapshot) => (
@@ -67,12 +71,12 @@ export const TaskCard = ({ task, index }: { task: Task, index: number }) => {
                                 <CategoryBadge
                                     key={taskCategory.id}
                                     taskId={task.id}
-                                    categories={categoriesQuery.data || []}
+                                    categories={filteredCategories}
                                     taskCategory={taskCategory}
                                 />
                             )
                         })}
-                        <CategoryBadge taskId={task.id} categories={categoriesQuery.data || []} />
+                        <CategoryBadge taskId={task.id} categories={filteredCategories} />
                     </div>
                 </div>
             )}

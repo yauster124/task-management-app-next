@@ -23,7 +23,8 @@ export const CategoryBadge = ({
     const assignCategory = useAssignCategory();
     const replaceCategory = useReplaceCategory();
     const unassignCategory = useUnassignCategory();
-    const isOpen = useUIStore((s) => s.isOpen(`category-combobox-${taskId}-${taskCategory?.id}`));
+    const comboboxStateKey = taskCategory?.id ? `category-combobox-${taskId}-${taskCategory.id}` : `category-combobox-${taskId}-new`;
+    const isOpen = useUIStore((s) => s.isOpen(comboboxStateKey));
     const { open, close } = useUIStore();
     const [searchValue, setSearchValue] = useState("");
     const categoryExists = categories.some(
@@ -33,7 +34,7 @@ export const CategoryBadge = ({
     return (
         <Popover
             open={isOpen}
-            onOpenChange={(openValue) => openValue ? open(`category-combobox-${taskId}-${taskCategory?.id}`) : close(`category-combobox-${taskId}-${taskCategory?.id}`)}
+            onOpenChange={(openValue) => openValue ? open(comboboxStateKey) : close(comboboxStateKey)}
         >
             <PopoverTrigger asChild>
                 <Badge className={cn(
