@@ -14,7 +14,7 @@ type RequestOptions = {
 
 async function refreshToken(): Promise<string | null> {
     try {
-        const res = await fetch(`${env.API_URL}/refresh`, {
+        const res = await fetch(`${env.API_URL}/api/auth/refresh`, {
             method: "POST",
             credentials: "include", // send refresh cookie
         });

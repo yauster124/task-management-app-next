@@ -8,6 +8,8 @@ import { DeleteTask } from "./delete-task";
 import { useUIStore } from "@/components/store/ui-store";
 import { useCategories } from "@/features/categories/api/get-categories";
 import { CategoryBadge } from "@/components/ui/category-badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CommentsCard } from "@/features/comments/components/comments-card";
 
 export const TaskCard = ({ task, index }: { task: Task, index: number }) => {
     const isOpen = useUIStore((s) => s.isOpen(`task-menu-${task.id}`));
@@ -22,21 +24,28 @@ export const TaskCard = ({ task, index }: { task: Task, index: number }) => {
         <Draggable draggableId={String(task.id)} index={index}>
             {(provided, snapshot) => (
                 <div
-                    className="rounded-lg bg-neutral-800 mb-2 p-4"
+                    className="rounded-lg bg-neutral-50 dark:bg-neutral-800 mb-2 p-4"
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                 >
                     <div className="flex w-full justify-between items-center">
                         <h3 className="font-semibold">
-                            {task.title}
+                            <CommentsCard
+                                task={task}
+                                trigger={
+                                    <Button variant="link" className="p-0">
+                                        {task.title}
+                                    </Button>
+                                }
+                            />
                         </h3>
                         <DropdownMenu
                             open={isOpen}
                             onOpenChange={(openValue) => openValue ? open(`task-menu-${task.id}`) : close(`task-menu-${task.id}`)}
                         >
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon" className="hover:bg-neutral-900">
+                                <Button variant="ghost" size="icon" className="hover:bg-neutral-200 dark:hover:bg-neutral-700">
                                     <MoreHorizontal className="h-5 w-5" />
                                 </Button>
                             </DropdownMenuTrigger>
@@ -65,7 +74,7 @@ export const TaskCard = ({ task, index }: { task: Task, index: number }) => {
                     <div className="text-muted-foreground text-sm mb-4">
                         Do by: {task.doBy.toString()}
                     </div>
-                    <div className="flex w-full flex-wrap gap-2">
+                    <div className="flex w-full flex-wrap gap-2 mb-2">
                         {task.categories.map((taskCategory) => {
                             return (
                                 <CategoryBadge
@@ -77,6 +86,12 @@ export const TaskCard = ({ task, index }: { task: Task, index: number }) => {
                             )
                         })}
                         <CategoryBadge taskId={task.id} categories={filteredCategories} />
+                    </div>
+                    <div className="flex justify-end">
+                        <Avatar>
+                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
                     </div>
                 </div>
             )}

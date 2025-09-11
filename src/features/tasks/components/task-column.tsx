@@ -14,7 +14,7 @@ export const TaskColumn = ({
     tasks: Task[]
 }) => {
     return (
-        <div className="rounded-lg bg-neutral-900 p-4">
+        <div className="rounded-lg bg-neutral-100 dark:bg-neutral-900 p-4">
             <div className="mb-4">
                 <h3 className="font-semibold leading-none tracking-tight">
                     {status.title}
@@ -25,7 +25,7 @@ export const TaskColumn = ({
                     <div
                         ref={droppableProvided.innerRef}
                         {...droppableProvided.droppableProps}
-                        className={snapshot.isDraggingOver ? "bg-neutral-700" : ""}
+                        className={snapshot.isDraggingOver ? "bg-neutral-200 dark:bg-neutral-700" : ""}
                     >
                         {(tasks ?? []).map((task, index) => (
                             <TaskCard key={task.id} task={task} index={index} />
@@ -40,7 +40,7 @@ export const TaskColumn = ({
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="w-full"
+                        className="w-full hover:bg-neutral-200"
                     >
                         <PlusIcon />
                         <span className="font-normal text-muted-foreground">Add another task</span>

@@ -6,6 +6,7 @@ export interface Task {
   taskIndex: number
   status: Status
   categories: Category[]
+  comments: Comment[]
 }
 
 export interface Status {
@@ -16,6 +17,18 @@ export interface Status {
 export interface Category {
   id: string
   title: string
+}
+
+export interface Comment {
+  id: string
+  content: string
+  createdAt: Date
+  user: User
+}
+
+export interface User {
+  id: string
+  username: string
 }
 
 export type AuthResponse = {
