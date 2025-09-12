@@ -30,16 +30,14 @@ export const TaskCard = ({ task, index }: { task: Task, index: number }) => {
                     {...provided.dragHandleProps}
                 >
                     <div className="flex w-full justify-between items-center">
-                        <h3 className="font-semibold">
-                            <CommentsCard
-                                task={task}
-                                trigger={
-                                    <Button variant="link" className="p-0">
-                                        {task.title}
-                                    </Button>
-                                }
-                            />
-                        </h3>
+                        <CommentsCard
+                            task={task}
+                            trigger={
+                                <Button variant="link" className="cursor-pointer p-0">
+                                    {task.title}
+                                </Button>
+                            }
+                        />
                         <DropdownMenu
                             open={isOpen}
                             onOpenChange={(openValue) => openValue ? open(`task-menu-${task.id}`) : close(`task-menu-${task.id}`)}
@@ -89,12 +87,14 @@ export const TaskCard = ({ task, index }: { task: Task, index: number }) => {
                     </div>
                     <div className="flex justify-end">
                         <Avatar>
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>CN</AvatarFallback>
+                            <AvatarFallback>
+                                {task.user.username.charAt(0).toUpperCase()}
+                            </AvatarFallback>
                         </Avatar>
                     </div>
                 </div>
-            )}
-        </Draggable>
+            )
+            }
+        </Draggable >
     )
 }

@@ -10,8 +10,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { DatePicker } from "@/components/ui/date-picker"
 import { Loader2Icon } from "lucide-react"
 import { useUIStore } from "@/components/store/ui-store"
-import { ViewComment } from "@/features/comments/components/view-comment"
-import { CreateComment } from "@/features/comments/components/create-comment"
 
 export const UpdateTask = ({
     trigger,
@@ -105,12 +103,6 @@ export const UpdateTask = ({
                         </DialogFooter>
                     </form>
                 </Form>
-                <CreateComment taskId={task.id} />
-                {task.comments?.map((comment) => {
-                    return (
-                        <ViewComment comment={comment} />
-                    )
-                })}
             </DialogContent>
         </Dialog>
     )

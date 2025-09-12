@@ -5,6 +5,7 @@ import { DialogTitle } from "@radix-ui/react-dialog"
 import { ViewComment } from "./view-comment"
 import { CreateComment } from "./create-comment"
 import { useUIStore } from "@/components/store/ui-store"
+import { Separator } from "@/components/ui/separator"
 
 export const CommentsCard = ({
     task,
@@ -23,10 +24,15 @@ export const CommentsCard = ({
             </DialogTrigger>
             <DialogContent className="max-w-lg">
                 <DialogHeader>
-                    <DialogTitle>Comments for {task.title}</DialogTitle>
+                    <DialogTitle className="font-semibold">{task.title}</DialogTitle>
                 </DialogHeader>
-
-                <ScrollArea className="h-64 pr-4">
+                <div className="text-sm">
+                    <h3 className="font-semibold mb-2">Description</h3>
+                    <p>{task.description}</p>
+                </div>
+                <Separator />
+                <h3 className="text-sm font-semibold">Comments</h3>
+                <ScrollArea className="h-80 pr-4">
                     <div className="space-y-3">
                         {task.comments.length > 0 ? (
                             task.comments.map((comment) => (
@@ -37,10 +43,8 @@ export const CommentsCard = ({
                         )}
                     </div>
                 </ScrollArea>
-
-                <div className="pt-3 border-t">
-                    <CreateComment taskId={task.id} />
-                </div>
+                <Separator />
+                <CreateComment taskId={task.id} />
             </DialogContent>
         </Dialog>
     )

@@ -5,6 +5,7 @@ export interface Task {
   doBy: Date
   taskIndex: number
   status: Status
+  user: User
   categories: Category[]
   comments: Comment[]
 }

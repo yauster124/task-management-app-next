@@ -56,9 +56,6 @@ export const useLogout = () => {
         onSuccess: () => {
             deleteCookie("accessToken");
             window.location.href = "/login";
-        },
-        onError: (error) => {
-            console.log(error.message)
         }
     });
 }

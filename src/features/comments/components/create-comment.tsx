@@ -40,6 +40,7 @@ export const CreateComment = ({
                                 <Textarea
                                     placeholder="Write your comment..."
                                     className="min-h-[80px] resize-none"
+                                    autoComplete="nope"
                                     {...field}
                                 />
                             </FormControl>
